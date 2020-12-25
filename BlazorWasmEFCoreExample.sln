@@ -11,7 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsApp.BaseRepository"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsApp.DataAccess", "ContactsApp.DataAccess\ContactsApp.DataAccess.csproj", "{52BD0630-AB3D-4EFC-8815-098F19DA2B58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsApp.Repository", "ContactsApp.Repository\ContactsApp.Repository.csproj", "{C8AF5C4B-AA84-4E45-B488-CB7DD0AC7D0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsApp.Repository", "ContactsApp.Repository\ContactsApp.Repository.csproj", "{C8AF5C4B-AA84-4E45-B488-CB7DD0AC7D0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsApp.Server", "ContactsApp\Server\ContactsApp.Server.csproj", "{DF5FFA4F-3B58-45E7-ABDA-180AE0B702D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsApp.Client", "ContactsApp\Client\ContactsApp.Client.csproj", "{E69D8A63-FACF-4B50-82C5-9AFD99349E49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsApp.Shared", "ContactsApp\Shared\ContactsApp.Shared.csproj", "{E637B3DB-21B6-4CE5-9371-D1871878C486}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +45,18 @@ Global
 		{C8AF5C4B-AA84-4E45-B488-CB7DD0AC7D0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8AF5C4B-AA84-4E45-B488-CB7DD0AC7D0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8AF5C4B-AA84-4E45-B488-CB7DD0AC7D0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF5FFA4F-3B58-45E7-ABDA-180AE0B702D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF5FFA4F-3B58-45E7-ABDA-180AE0B702D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF5FFA4F-3B58-45E7-ABDA-180AE0B702D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF5FFA4F-3B58-45E7-ABDA-180AE0B702D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E69D8A63-FACF-4B50-82C5-9AFD99349E49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E69D8A63-FACF-4B50-82C5-9AFD99349E49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E69D8A63-FACF-4B50-82C5-9AFD99349E49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E69D8A63-FACF-4B50-82C5-9AFD99349E49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E637B3DB-21B6-4CE5-9371-D1871878C486}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E637B3DB-21B6-4CE5-9371-D1871878C486}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E637B3DB-21B6-4CE5-9371-D1871878C486}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E637B3DB-21B6-4CE5-9371-D1871878C486}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
