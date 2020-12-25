@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWasmEFCoreExample", "BlazorWasmEFCoreExample\BlazorWasmEFCoreExample.csproj", "{01BC42C3-52AB-447F-8B3B-0724E7B49D54}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsApp.Model", "ContactsApp.Model\ContactsApp.Model.csproj", "{E9952BFA-E99C-4FC7-8837-FB4142FB8465}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsApp.BaseRepository", "ContactsApp.BaseRepository\ContactsApp.BaseRepository.csproj", "{2E958D34-AA3A-452C-8276-AAD09AEDB3B4}"
@@ -25,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{01BC42C3-52AB-447F-8B3B-0724E7B49D54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{01BC42C3-52AB-447F-8B3B-0724E7B49D54}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{01BC42C3-52AB-447F-8B3B-0724E7B49D54}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{01BC42C3-52AB-447F-8B3B-0724E7B49D54}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9952BFA-E99C-4FC7-8837-FB4142FB8465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E9952BFA-E99C-4FC7-8837-FB4142FB8465}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9952BFA-E99C-4FC7-8837-FB4142FB8465}.Release|Any CPU.ActiveCfg = Release|Any CPU
