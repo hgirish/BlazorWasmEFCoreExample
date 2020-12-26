@@ -1,16 +1,24 @@
+using ContactsApp.BaseRepository;
+using ContactsApp.DataAccess;
+using ContactsApp.Model;
+using ContactsApp.Repository;
+using ContactsApp.Server.Data;
+using ContactsApp.Server.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Linq;
+
 
 namespace ContactsApp.Server
 {
     public class Startup
     {
+        private static readonly string DefaultConnection = nameof(DefaultConnection);
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -22,9 +30,40 @@ namespace ContactsApp.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationAuditDbContext>(options =>
+            options.UseSqlServer(
+                Configuration.GetConnectionString(DefaultConnection)));
+
+            services.AddDefaultIdentity<ApplicationUser>(options =>
+            options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationAuditDbContext>();
+
+            services.AddIdentityServer()
+                .AddApiAuthorization<ApplicationUser, ApplicationAuditDbContext>();
+
+            services.AddAuthentication()
+                .AddIdentityServerJwt();
+
+            services.AddDbContextFactory<ContactContext>(options =>
+            options.UseSqlServer(
+                Configuration.GetConnectionString(ContactContext.BlazorContactsDb))
+            .EnableSensitiveDataLogging());
+
+            // add the repository
+            services.AddScoped<IRepository<Contact, ContactContext>, ContactRepository>();
+
+            services.AddScoped<IBasicRepository<Contact>>(sp =>
+            sp.GetService<IRepository<Contact, ContactContext>>());
+
+            services.AddScoped<IUnitOfWork<Contact>, UnitOfWork<ContactContext, Contact>>();
+
+            // for seeding the data first time
+            services.AddScoped<SeedContacts>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,6 +73,7 @@ namespace ContactsApp.Server
             {
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();
+                app.UseMigrationsEndPoint();
             }
             else
             {
@@ -47,6 +87,10 @@ namespace ContactsApp.Server
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseIdentityServer();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

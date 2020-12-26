@@ -22,8 +22,8 @@ namespace ContactsApp.Repository
         /// </summary>
         /// <param name="context">The <see cref="ContactContext"/> to wrap.</param>
         public UnitOfWork(
-            IRepository<TEntity, TContext> repo, 
-            DbContextFactory<TContext> factory)
+            IRepository<TEntity, TContext> repo,
+            IDbContextFactory<TContext> factory)
         {
             repo.PersistedContext = factory.CreateDbContext();
             _repo = repo;

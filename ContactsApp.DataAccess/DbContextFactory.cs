@@ -8,7 +8,7 @@ namespace ContactsApp.DataAccess
     /// Factory to generate instances of <see cref="TContext"/>
     /// </summary>
     /// <typeparam name="TContext">The <see cref="DbContext"/> type to provide.</typeparam>
-    public class DbContextFactory<TContext> where TContext : DbContext
+    public class ContactDbContextFactory<TContext> : IDbContextFactory<TContext> where TContext : DbContext
     {
         /// <summary>
         /// Service provider.
@@ -18,7 +18,7 @@ namespace ContactsApp.DataAccess
         /// Inject the service provider.
         /// </summary>
         /// <param name="provider">The <see cref="IServiceProvider"/> instance.</param>
-        public DbContextFactory(IServiceProvider provider)
+        public ContactDbContextFactory(IServiceProvider provider)
         {
             _provider = provider;
         }
@@ -37,5 +37,7 @@ namespace ContactsApp.DataAccess
             // satisfies any dependencies via the provider
             return ActivatorUtilities.CreateInstance<TContext>(_provider);
         }
+
+       
     }
 }

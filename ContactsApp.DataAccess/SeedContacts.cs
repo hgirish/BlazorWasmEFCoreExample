@@ -1,4 +1,5 @@
 ﻿using ContactsApp.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -11,9 +12,9 @@ namespace ContactsApp.DataAccess
     /// </summary>
     public class SeedContacts
     {
-        private readonly DbContextFactory<ContactContext> _factory;
+        private readonly IDbContextFactory<ContactContext> _factory;
 
-        public SeedContacts(DbContextFactory<ContactContext> factory)
+        public SeedContacts(IDbContextFactory<ContactContext> factory)
         {
             _factory = factory;
         }

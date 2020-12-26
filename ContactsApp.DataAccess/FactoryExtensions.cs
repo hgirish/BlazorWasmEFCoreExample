@@ -6,7 +6,7 @@ namespace ContactsApp.DataAccess
 {
     public static class FactoryExtensions
     {
-        public static IServiceCollection AddDbContextFactory<TContext>(
+        public static IServiceCollection AddDbContextFactoryWithLifespan<TContext>(
             this IServiceCollection collection,
             Action<DbContextOptionsBuilder> optionsAction = null,
             ServiceLifetime contextAndOptionsLifetime = ServiceLifetime.Singleton)

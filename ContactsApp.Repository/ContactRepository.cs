@@ -15,7 +15,7 @@ namespace ContactsApp.Repository
     /// </summary>
     public class ContactRepository : IRepository<Contact, ContactContext>
     {
-        private readonly DbContextFactory<ContactContext> _factory;
+        private readonly IDbContextFactory<ContactContext> _factory;
         private bool disposedValue;
         /// <summary>
         /// Creates a new instance of the <see cref="ContactRepository"/> class.
@@ -24,7 +24,7 @@ namespace ContactsApp.Repository
         /// The <see cref="DbContextFactory{ContactContext}"/>
         /// to use.
         /// </param>
-        public ContactRepository(DbContextFactory<ContactContext> factory)
+        public ContactRepository(IDbContextFactory<ContactContext> factory)
         {
             _factory = factory;
         }
