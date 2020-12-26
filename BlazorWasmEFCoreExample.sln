@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsApp.Server", "Conta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsApp.Client", "ContactsApp\Client\ContactsApp.Client.csproj", "{E69D8A63-FACF-4B50-82C5-9AFD99349E49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsApp.Controls", "ContactsApp.Controls\ContactsApp.Controls.csproj", "{BC0AEC37-704B-4B72-B842-5D3CA6880B48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsApp.Controls", "ContactsApp.Controls\ContactsApp.Controls.csproj", "{BC0AEC37-704B-4B72-B842-5D3CA6880B48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
