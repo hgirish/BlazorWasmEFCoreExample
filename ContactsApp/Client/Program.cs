@@ -1,3 +1,7 @@
+using ContactsApp.BaseRepository;
+using ContactsApp.Client.Data;
+using ContactsApp.Controls.Grid;
+using ContactsApp.Model;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +38,15 @@ namespace ContactsApp.Client
 
 
             builder.Services.AddApiAuthorization();
+
+            // client implementation
+            builder.Services.AddScoped<IBasicRepository<Contact>, WasmRepository>();
+
+            // references to control filters and sorts
+            builder.Services.AddScoped<IPageHelper, PageHelper>();
+            builder.Services.AddScoped<IContactFilters, ContactFilters>();
+            builder.Services.AddScoped<GridQueryAdapter>();
+            
 
             await builder.Build().RunAsync();
         }

@@ -1,0 +1,28 @@
+﻿@using ContactsApp.BaseRepository;
+@using ContactsApp.Model
+@inject IContactFilters Filters
+
+<Pager />
+@code {
+
+
+    /// <summary>
+    /// Allow route-based navigation.
+    /// </summary>
+    [Parameter]
+    public int Page
+    {
+        get => Filters.PageHelper.Page;
+        set
+        {
+            Filters.PageHelper.Page = value;
+        }
+    }
+
+    /// <summary>
+    /// This delegate requests the collection refresh so it can be handled
+    /// appropriately on client vs. server.
+    /// </summary>
+    [Parameter]
+    public Func<IBasicRepository<Contact>, Action<ICollection<Contact>>, Task> FetchContactsAsync { get; set; }
+}

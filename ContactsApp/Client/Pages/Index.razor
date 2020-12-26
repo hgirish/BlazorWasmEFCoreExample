@@ -1,6 +1,22 @@
 ﻿@page "/"
+@page "/{Page:int}"
+@using System.Diagnostics
 
-<h1>Hello, world!</h1>
+<ListControl Page="Page" FetchContactsAsync="(repo,contacts) => FetchAsync(repo, contacts)" />
 
-Welcome to your new app.
 
+@code {
+
+
+    [Parameter]
+    public int Page { get; set; }
+
+    public async Task FetchAsync(IBasicRepository<Contact> repo,
+        Action<ICollection<Contact>> contacts)
+    {
+        Debug.WriteLine($"index.razor: before FetchAsync");
+        contacts((await repo.GetListAsync()).ToList());
+
+        Debug.WriteLine($"index.razor: after FetchAsync");
+    }
+}

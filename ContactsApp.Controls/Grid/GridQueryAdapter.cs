@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -80,6 +81,61 @@ namespace ContactsApp.Controls.Grid
                 .ToListAsync();
             _controls.PageHelper.PageItems = collection.Count;
             return collection;
+        }
+
+        /// <summary>
+        /// Builds the query.
+        /// </summary>
+        /// <param name="root">The <see cref="IQueryable{Contact}"/> to start with.</param>
+        /// <returns>
+        /// The resulting <see cref="IQueryable{Contact}"/> with sorts and
+        /// filters applied.
+        /// </returns>
+        private IQueryable<Contact> FilterAndQuery(IQueryable<Contact> root)
+        {
+            var sb = new StringBuilder();
+
+            // apply a filter?
+            if (!string.IsNullOrWhiteSpace(_controls.FilterText))
+            {
+                var filter = _filterQueries[_controls.FilterColumn];
+                sb.Append($"Filter: '{_controls.FilterColumn}' ");
+                root = filter(root);
+            }
+
+            // apply the expression
+            var expression = _expressions[_controls.SortColumn];
+            sb.Append($"Sort: '{_controls.SortColumn}' ");
+
+            // fix up name
+            if (_controls.SortColumn == ContactFilterColumns.Name && _controls.ShowFirstNameFirst)
+            {
+                sb.Append($"(first name first) ");
+                expression = c => c.FirstName;
+            }
+
+            var sortDir = _controls.SortAscending ? "ASC" : "DESC";
+            sb.Append(sortDir);
+
+            Debug.WriteLine(sb.ToString());
+
+            // return the unfiltered query for total count, and the filtered for fetching
+            return _controls.SortAscending 
+                ? root.OrderBy(expression)
+                : root.OrderByDescending(expression);
+
+        }
+        /// <summary>
+        /// Build the query to bring back a single page.
+        /// </summary>
+        /// <param name="query">The <see cref="IQueryable{Contact}"/> to modify.</param>
+        /// <returns> The new <see cref="IQueryable{Contact}"/> for a page</returns>
+        private IQueryable<Contact> FetchPageQuery(IQueryable<Contact> query)
+        {
+            return query
+                .Skip(_controls.PageHelper.Skip)
+                .Take(_controls.PageHelper.PageSize)
+                .AsNoTracking();
         }
 
         /// <summary>
