@@ -90,9 +90,47 @@ namespace ContactsApp.Client.Data
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Load a <see cref="Contact"/>.
+        /// </summary>
+        /// <param name="id">The id of the <see cref="Contact"/> to load.</param>
+        /// <param name="_">Unused <see cref="ClaimsPrincipal"/>.</param>
+        /// <param name="forUpdate"><c>True</c> when concurrency information should be loaded.</param>
+        /// <returns></returns>
         public Task<Contact> LoadAsync(int id, ClaimsPrincipal user, bool forUpdate = false)
         {
-            throw new NotImplementedException();
+            if (forUpdate)
+            {
+                return LoadAsync(id);
+            }
+            return SafeGetFromJsonAsync<Contact>($"{ApiContacts}{id}");
+        }
+
+        /// <summary>
+        /// Load a <see cref="Contact"/> for updates.
+        /// </summary>
+        /// <param name="id">The id of the <see cref="Contact"/> to load.</param>
+        /// <returns></returns>
+        public async Task<Contact> LoadAsync(int id)
+        {
+            OriginalContact = null;
+            DatabaseContact = null;
+            RowVersion = null;
+
+            var result = await SafeGetFromJsonAsync<ContactConcurrencyResolver>($"{ApiContacts}{id}{ForUpdate}");
+
+            if (result ==null)
+            {
+                return null;
+            }
+
+            // our instance
+            OriginalContact = result.OriginalContact;
+
+            // save the version 
+            RowVersion = result.RowVersion;
+
+            return result.OriginalContact;
         }
 
         public Task QueryAsync(Func<IQueryable<Contact>, Task> query)

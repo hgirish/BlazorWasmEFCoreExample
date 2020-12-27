@@ -1,4 +1,4 @@
-﻿
+﻿@implements IDisposable
 
 @using ContactsApp.BaseRepository
 @using ContactsApp.Model
@@ -7,9 +7,34 @@
 @inject ClaimsPrincipal User
 @inject NavigationManager Navigation
 @inject IPageHelper PageHelper 
-
+@inject EditService EditService 
  
-Edit Contact Control @ContactId
+@if (!Busy && Contact == null)
+{
+    <div class="alert alert-warning">Could not find contact with id <span>@ContactId</span>.</div>
+}
+else
+{
+    <span>ContactForm</span> 
+}
+@if (ConcurrencyError)
+{
+    <br />
+    <div class="alert alert-danger">
+        <p>
+            The contact details have changed since it was last loaded.
+            The updated fields are highlighted in the form.
+            Please choose an option:
+        </p>
+        <p><b>Cancel</b> to lose your changes and keep the database version</p>
+        <p><b>Submit</b> to force an update with your version</p>
+    </div>
+}
+@if (Error)
+{
+    <br />
+    <div class="alert alert-danger">Failed to update the contact (@ErrorMessage).</div>
+}
 
 @code {
     /// <summary>
@@ -17,4 +42,127 @@ Edit Contact Control @ContactId
     /// </summary>
     [Parameter]
     public int ContactId { get; set; }
+
+    /// <summary>
+    /// The <see cref="IUnitOfWork{Contact}"/> to service requests.
+    /// </summary>
+    [Parameter]
+    public IUnitOfWork<Contact> Service { get; set; }
+
+    /// <summary>
+    /// <see cref="Contact"/> being edited.
+    /// </summary>
+    public Contact Contact { get; set; }
+
+    /// <summary>
+    /// Database version of <see cref="Contact"/> when concurrency issues exist.
+    /// </summary>
+    public Contact DbContact { get; set; }
+
+    /// <summary>
+    /// Avoid concurrent requests.
+    /// </summary>
+    public bool Busy { get; set; }
+
+    /// <summary>
+    /// An occured in the update
+    /// </summary>
+    public bool Error { get; set; }
+
+    /// <summary>
+    /// A concurrency error needs resulution.
+    /// </summary>
+    public bool ConcurrencyError { get; set; }
+
+    /// <summary>
+    /// Error message.
+    /// </summary>
+    public string ErrorMessage = string.Empty;
+
+    /// <summary>
+    /// Start it up
+    /// </summary>
+    /// <returns>A <see cref="Task"/>.</returns>
+    protected override async Task OnParametersSetAsync()
+    {
+        Contact = await Service.Repo.LoadAsync(ContactId, null, true);
+        Busy = false; // end async 
+        await base.OnParametersSetAsync();
+    }
+
+    public override async  Task SetParametersAsync(ParameterView parameters)
+    {
+        Busy = true;
+        await base.SetParametersAsync(parameters);
+    }
+
+    public async Task ValidationResultAsync(bool success)
+    {
+        if (Busy)
+        {
+            return;
+        }
+        if (!success)
+        {
+            // still need to edit model
+            Error = false;
+            ConcurrencyError = false;
+            return;
+        }
+
+        Busy = true; // async 
+        try
+        {
+            await Service.CommitAsync();
+            EditService.Success = true;
+            // go to View to see the record
+            Navigation.NavigateTo($"/view/{Contact.Id}");
+        }
+        catch (RepoConcurrencyException<Contact> dbex)
+        {
+            // concurrency issues!
+            ConcurrencyError = true;
+
+            if (dbex.DbEntity == null)
+            {
+                // deleted - show contact not found
+                Navigation.NavigateTo($"/view/{Contact.Id}");
+                return;
+            }
+            // bind to show labels on form
+            DbContact = dbex.DbEntity;
+
+            Error = false;
+            Busy = false;
+        }
+        catch (Exception ex)
+        {
+            // unknown exception
+            Error = true;
+            ErrorMessage = ex.Message;
+            Busy = false;
+        }
+    }
+
+    /// <summary>
+    /// Bail out
+    /// </summary>
+    public void Cancel()
+    {
+        Busy = true;
+        Navigation.NavigateTo($"/{PageHelper.Page}");
+    }
+
+    /// <summary>
+    /// Dispose and properly unregister the handler
+    /// </summary>
+    public void Dispose()
+    {
+        if (Service != null)
+        {
+            Service.Dispose();
+            Service = null;
+        }
+    }
+
 }

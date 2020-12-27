@@ -4,12 +4,13 @@
 @using ContactsApp.BaseRepository
 @using ContactsApp.Model
 
-<EditContactControl ContactId="@ContactId" />
+<EditContactControl ContactId="@ContactId" Service="Service" />
 
 @code {
 
     /// <summary>
-    /// Id of <see cr
+    /// Id of <see cref="Contact"/> to edit.
+    /// </summary>
     [Parameter]
     public int ContactId { get; set; }
 }
