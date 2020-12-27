@@ -1,0 +1,38 @@
+﻿@using ContactsApp.Model
+
+@inject IContactFilters Filters 
+
+<button class="btn btn-primary" 
+        @onclick="async () => await ToggleAsync()">
+    @ButtonText
+</button>
+&nbsp;
+
+@code {
+
+    /// <summary>
+    /// The grid wrapper.
+    /// </summary>
+    [CascadingParameter]
+    public GridWrapper Wrapper { get; set; }
+
+    /// <summary>
+    /// Text to show to swap name preference.
+    /// </summary>
+    public string ButtonText => Filters.ShowFirstNameFirst ?
+        "Show Last Name, First Name" :
+        "Show First Name, Last Name";
+
+    /// <summary>
+    /// Toggle the value
+    /// </summary>
+    /// <returns>A <see cref="Task"/></returns>
+    public Task ToggleAsync()
+    {
+        Filters.ShowFirstNameFirst = !Filters.ShowFirstNameFirst;
+
+        return Wrapper.FilterChanged.InvokeAsync(this);
+    }
+
+
+}
