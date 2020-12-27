@@ -55,9 +55,17 @@ namespace ContactsApp.Client.Data
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteAsync(int id, ClaimsPrincipal user)
+        public  async Task<bool> DeleteAsync(int id, ClaimsPrincipal user)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _apiClient.DeleteAsync($"{ApiContacts}{id}");
+                return true;
+            }
+            catch
+            { 
+                return false;
+            }
         }
 
         /// <summary>
