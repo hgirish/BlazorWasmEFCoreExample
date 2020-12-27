@@ -1,13 +1,8 @@
 ﻿using ContactsApp.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContactsApp.Controls.Grid
 {
-   public  class PageHelper : IPageHelper
+    public  class PageHelper : IPageHelper
     {
         /// <summary>
         /// Items on a page.
@@ -37,7 +32,7 @@ namespace ContactsApp.Controls.Grid
         {
             get
             {
-                Console.WriteLine($"Page: {Page}");
+                
                 var page = Page - 1;
                 if (page < 0)
                 {
