@@ -1,0 +1,20 @@
+﻿
+
+@using ContactsApp.BaseRepository
+@using ContactsApp.Model
+@using System.Security.Claims
+
+@inject ClaimsPrincipal User
+@inject NavigationManager Navigation
+@inject IPageHelper PageHelper 
+
+ 
+Edit Contact Control @ContactId
+
+@code {
+    /// <summary>
+    /// Id of <see cref="Contact"/> to edit.
+    /// </summary>
+    [Parameter]
+    public int ContactId { get; set; }
+}

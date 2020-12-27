@@ -1,0 +1,15 @@
+﻿@page "/edit/{ContactId:int}"
+@inherits OwningComponentBase<IUnitOfWork<Contact>>
+
+@using ContactsApp.BaseRepository
+@using ContactsApp.Model
+
+<EditContactControl ContactId="@ContactId" />
+
+@code {
+
+    /// <summary>
+    /// Id of <see cr
+    [Parameter]
+    public int ContactId { get; set; }
+}

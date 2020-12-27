@@ -3,6 +3,9 @@ using ContactsApp.Model;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using ContactsApp.Client.Data;
+using ContactsApp.DataAccess;
 
 namespace ContactsApp.Server.Controllers
 {
@@ -29,7 +32,7 @@ namespace ContactsApp.Server.Controllers
             }
             if (forUpdate)
             {
-                /*
+                
                 var unitOfWork = _serviceProvider.GetService<IUnitOfWork<Contact>>();
                 HttpContext.Response.RegisterForDispose(unitOfWork);
                 var result = await unitOfWork.Repo.LoadAsync(id, User, true);
@@ -43,9 +46,8 @@ namespace ContactsApp.Server.Controllers
                     await unitOfWork.Repo.GetPropertyValueAsync<byte[]>(
                         result, ContactContext.RowVersion)
                 };
-                return Ok(concurrencyResult);
-                */
-                return Ok();
+                return Ok(concurrencyResult);             
+               
             }
                 
             else
