@@ -46,10 +46,9 @@
         @if (Contacts != null && Contacts.Count > 0)
         {
             @foreach (var contact in Contacts)
-            {
-               <p> @contact.FirstName &nbsp; @contact.LastName </p>
-                @*<ContactListRow CurrentContact="@contact"
-                                DeleteContact="@async c => await DeleteContactAsync(c))" />*@
+            {               
+                <ContactListRow CurrentContact="@contact"
+                                DeleteContact="@(async c => await DeleteContactAsync(c))" />
             }
         }
     </div>
