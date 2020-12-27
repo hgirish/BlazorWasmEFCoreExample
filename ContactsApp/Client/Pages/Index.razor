@@ -2,11 +2,15 @@
 @page "/{Page:int}"
 @inject IBasicRepository<Contact> repo
 
+@using ContactsApp.BaseRepository
+@using ContactsApp.Model
+
 @using System.Diagnostics
 
-<ListControl Page="Page" FetchContactsAsync="(contacts) => FetchAsync(contacts)" />
+<ListControl Page="Page"
+             FetchContactsAsync="(repo, contacts) => FetchAsync(repo, contacts)" />
 <p>
-   Number of items: @Contacts.Count
+    Number of items: @Contacts.Count
 </p>
 
 @code {
@@ -17,19 +21,22 @@
 
     public ICollection<Contact> Contacts { get; set; } = new List<Contact>();
 
-    public async Task FetchAsync(
+    /// <summary>
+    /// Pass in the actual work so this can be reused between client and server
+    /// </summary>
+    /// <param name="repo">The <see cref="IBasicRepository{Contact}"/> to use.</param>
+    /// <param name="contacts">How to handle the returned <see cref="ICollection{Contact}"/>.</param>
+    /// <returns>A <see cref="Task"/></returns>
+    public async Task FetchAsync(IBasicRepository<Contact> repo,
         Action<ICollection<Contact>> contacts)
     {
-        Debug.WriteLine($"index.razor: before FetchAsync");
         contacts((await repo.GetListAsync()).ToList());
-
-        Debug.WriteLine($"index.razor: after FetchAsync");
     }
 
-        protected async override Task OnInitializedAsync()
-        {
-           Contacts = await repo.GetListAsync();
+    protected async override Task OnInitializedAsync()
+    {
+        Contacts = await repo.GetListAsync();
         Console.WriteLine(Contacts.Count);
-           // return await base.OnInitializedAsync();
-        }
+        // return await base.OnInitializedAsync();
+    }
 }

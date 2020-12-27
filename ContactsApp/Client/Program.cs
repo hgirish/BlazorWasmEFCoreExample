@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,7 +47,9 @@ namespace ContactsApp.Client
             builder.Services.AddScoped<IPageHelper, PageHelper>();
             builder.Services.AddScoped<IContactFilters, ContactFilters>();
             builder.Services.AddScoped<GridQueryAdapter>();
-            
+
+            builder.Services.AddScoped(sp =>
+            new ClaimsPrincipal(new ClaimsIdentity()));
 
             await builder.Build().RunAsync();
         }
