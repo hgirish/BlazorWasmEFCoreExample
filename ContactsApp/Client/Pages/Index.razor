@@ -1,9 +1,13 @@
 ﻿@page "/"
 @page "/{Page:int}"
+@inject IBasicRepository<Contact> repo
+
 @using System.Diagnostics
 
-<ListControl Page="Page" FetchContactsAsync="(repo,contacts) => FetchAsync(repo, contacts)" />
-
+<ListControl Page="Page" FetchContactsAsync="(contacts) => FetchAsync(contacts)" />
+<p>
+   Number of items: @Contacts.Count
+</p>
 
 @code {
 
@@ -11,7 +15,9 @@
     [Parameter]
     public int Page { get; set; }
 
-    public async Task FetchAsync(IBasicRepository<Contact> repo,
+    public ICollection<Contact> Contacts { get; set; } = new List<Contact>();
+
+    public async Task FetchAsync(
         Action<ICollection<Contact>> contacts)
     {
         Debug.WriteLine($"index.razor: before FetchAsync");
@@ -19,4 +25,11 @@
 
         Debug.WriteLine($"index.razor: after FetchAsync");
     }
+
+        protected async override Task OnInitializedAsync()
+        {
+           Contacts = await repo.GetListAsync();
+        Console.WriteLine(Contacts.Count);
+           // return await base.OnInitializedAsync();
+        }
 }

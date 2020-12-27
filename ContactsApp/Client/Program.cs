@@ -26,8 +26,8 @@ namespace ContactsApp.Client
 
             builder.Services.AddHttpClient(BaseClient,
                 client =>
-                client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
-                .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+                client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+            //    .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
             //builder.Services.AddScoped(sp => 
             //new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
@@ -37,7 +37,7 @@ namespace ContactsApp.Client
             .CreateClient(BaseClient));
 
 
-            builder.Services.AddApiAuthorization();
+            //builder.Services.AddApiAuthorization();
 
             // client implementation
             builder.Services.AddScoped<IBasicRepository<Contact>, WasmRepository>();

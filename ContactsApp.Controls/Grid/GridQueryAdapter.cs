@@ -145,7 +145,8 @@ namespace ContactsApp.Controls.Grid
         /// <returns>Asynchronous <see cref="Task"/>.</returns>
         private async Task CountAsync(IQueryable<Contact> query)
         {
-            _controls.PageHelper.TotalItemCount = await query.CountAsync();
+           var totalCounts = await query.CountAsync();
+            _controls.PageHelper.TotalItemCount = totalCounts;
         }
     }
 }

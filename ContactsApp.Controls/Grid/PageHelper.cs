@@ -33,7 +33,19 @@ namespace ContactsApp.Controls.Grid
         /// <summary>
         /// Current page, 0-based.
         /// </summary>
-        public int DbPage => Page - 1;
+        public int DbPage
+        {
+            get
+            {
+                Console.WriteLine($"Page: {Page}");
+                var page = Page - 1;
+                if (page < 0)
+                {
+                    page = 0;
+                }
+                return page;
+            }
+        }
 
         /// <summary>
         /// How many records to skip to start current page.

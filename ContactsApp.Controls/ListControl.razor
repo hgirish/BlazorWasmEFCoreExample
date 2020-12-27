@@ -24,5 +24,5 @@
     /// appropriately on client vs. server.
     /// </summary>
     [Parameter]
-    public Func<IBasicRepository<Contact>, Action<ICollection<Contact>>, Task> FetchContactsAsync { get; set; }
+    public Func<Action<ICollection<Contact>>, Task> FetchContactsAsync { get; set; }
 }

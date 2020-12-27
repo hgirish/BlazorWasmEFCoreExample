@@ -58,7 +58,7 @@ namespace ContactsApp.Server
             services.AddScoped<IUnitOfWork<Contact>, UnitOfWork<ContactContext, Contact>>();
 
             // for seeding the data first time
-            services.AddScoped<SeedContacts>();
+            //services.AddScoped<SeedContacts>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();

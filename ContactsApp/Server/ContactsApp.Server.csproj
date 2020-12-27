@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ContactsApp.Controls\ContactsApp.Controls.csproj" />
     <ProjectReference Include="..\..\ContactsApp.DataAccess\ContactsApp.DataAccess.csproj" />
     <ProjectReference Include="..\..\ContactsApp.Repository\ContactsApp.Repository.csproj" />
     <ProjectReference Include="..\Client\ContactsApp.Client.csproj" />
