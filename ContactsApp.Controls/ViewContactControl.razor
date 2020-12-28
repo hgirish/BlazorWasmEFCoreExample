@@ -1,0 +1,135 @@
+﻿@using ContactsApp.BaseRepository;
+@using ContactsApp.Model;
+@using System.Security.Claims;
+
+@inject ClaimsPrincipal User
+@inject IBasicRepository<Contact> Repo
+@inject IPageHelper PageHelper
+@inject EditService EditService
+
+
+@code {
+
+
+    /// <summary>
+    /// Id from route of <see cref="Contact"/>.
+    /// </summary>
+    [Parameter]
+    public int ContactId { get; set; }
+
+    /// <summary>
+    /// Navigation check.
+    /// </summary>
+    private int _lastContactId;
+
+    /// <summary>
+    /// <c>True</c> with redirect from add.
+    /// </summary>
+    public bool EditSuccess { get; set; }
+
+    /// The <see cref="Contact"/> to view.
+    /// </summary>
+    public Contact Contact { get; set; }
+
+    /// <summary>
+    /// Set to <c>true</c> when not found.
+    /// </summary>
+    public bool NotFound = false;
+
+    /// <summary>
+    /// Set to <c>true</c> when delete is requested.
+    /// </summary>
+    public bool ShowConfirmation = false;
+
+    /// <summary>
+    /// Set to true when delete is successful
+    /// </summary>
+    public bool Deleted = false;
+
+    /// <summary>
+    /// Loaded the component.
+    /// </summary>
+    /// <param name="firstRender"><c>true</c> on first render.</param>
+    /// <returns>A <see cref="Task"/>.</returns>
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            await LoadContactAsync();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    /// <summary>
+    /// Navigated.
+    /// </summary>
+    /// <returns>A <see cref="Task"/>.</returns>
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_lastContactId != ContactId)
+        {
+            _lastContactId = ContactId;
+            EditSuccess = EditService.Success;
+            EditService.Success = false;
+            await LoadContactAsync();
+        }
+        await base.OnParametersSetAsync();
+    }
+
+    /// <summary>
+    /// Confirm deletion.
+    /// </summary>
+    /// <param name="result"><c>True</c> when user confirmed</param>
+    /// <returns>A <see cref="Task"/>.</returns>
+    public async Task ConfirmAsync(bool result)
+    {
+        if (result)
+        {
+            await DeleteAsync();
+        }
+        else
+        {
+            ShowConfirmation = false;
+            EditSuccess = false;
+        }
+    }
+
+    public void ShowDeleteConfirmation()
+    {
+        ShowConfirmation = true;
+        EditSuccess = false;
+    }
+    /// <summary>
+    /// Loads the <see cref="Contact"/>.
+    /// </summary>
+    /// <returns>A <see cref="Task"/>.</returns>
+    private async Task LoadContactAsync()
+    {
+        NotFound = false;
+        Contact = null;
+        Contact = await Repo.LoadAsync(ContactId, null);
+        if (Contact == null)
+        {
+            NotFound = true;
+        }
+    }
+
+    /// <summary>
+    /// Deletes the contact.
+    /// </summary>
+    /// <returns>A <see cref="Task"/>.</returns>
+    private async Task DeleteAsync()
+    {
+        var result = await Repo.DeleteAsync(ContactId, User);
+        if (result)
+        {
+            Deleted = true;
+        }
+        else
+        {
+            // show not found
+            await LoadContactAsync();
+        }
+    }
+
+}

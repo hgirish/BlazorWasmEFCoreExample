@@ -1,0 +1,11 @@
+﻿@page "/View/{ContactId:int}"
+<h3>ViewContact</h3>
+@ContactId
+@code {
+
+    /// <summary>
+    /// Id from route of contact.
+    /// </summary>
+    [Parameter]
+    public int ContactId { get; set; }
+}
