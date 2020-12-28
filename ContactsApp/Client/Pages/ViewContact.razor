@@ -1,6 +1,8 @@
 ﻿@page "/View/{ContactId:int}"
 <h3>ViewContact</h3>
-@ContactId
+
+<ViewContactControl ContactId="ContactId" />
+
 @code {
 
     /// <summary>

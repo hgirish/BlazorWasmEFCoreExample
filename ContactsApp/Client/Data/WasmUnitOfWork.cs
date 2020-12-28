@@ -26,7 +26,7 @@ namespace ContactsApp.Client.Data
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void SetUser(ClaimsPrincipal user)
