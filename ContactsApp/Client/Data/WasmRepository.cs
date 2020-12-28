@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Security.Claims;
@@ -143,9 +144,35 @@ namespace ContactsApp.Client.Data
             throw new NotImplementedException();
         }
 
-        public Task<Contact> UpdateAsync(Contact item, ClaimsPrincipal user)
+        /// <summary>
+        /// Update a <see cref="Contact"/> with concurrency checks.
+        /// </summary>
+        /// <param name="item">The <see cref="Contact"/> to update.</param>
+        /// <param name="user">The <see cref="ClaimsPrincipal"/>.</param>
+        /// <returns>The updated <see cref="Contact"/>.</returns>
+        public async Task<Contact> UpdateAsync(Contact item, ClaimsPrincipal user)
         {
-            throw new NotImplementedException();
+            // send down the contact with the version we have tracked
+            var result = await _apiClient.PutAsJsonAsync(
+                $"{ApiContacts}{item.Id}",
+                item.ToConcurrencyResolver(this));
+            if (result.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            if (result.StatusCode == HttpStatusCode.Conflict)
+            {
+                // concurrency issue, so extract what the updated information is
+                var resolver = await result.Content.ReadFromJsonAsync<ContactConcurrencyResolver>();
+                DatabaseContact = resolver.DatabaseContact;
+                var ex = new RepoConcurrencyException<Contact>(item, new Exception())
+                {
+                    DbEntity = resolver.DatabaseContact
+                };
+                RowVersion = resolver.RowVersion; // for override
+                throw ex;
+            }
+            throw new HttpRequestException($"Bad status code: {result.StatusCode}");
         }
 
         /// <summary>

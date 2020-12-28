@@ -8,18 +8,20 @@ namespace ContactsApp.Client.Data
 {
     public class WasmUnitOfWork : IUnitOfWork<Contact>
     {
-        private readonly IBasicRepository<Contact> _repo;
+        private readonly WasmRepository _repo;
 
         public WasmUnitOfWork(IBasicRepository<Contact> repo)
         {
-            _repo = repo;
+            _repo = repo as WasmRepository;
         }
+
+        public Contact OriginalContact { get => _repo.OriginalContact; }
 
         public IBasicRepository<Contact> Repo => _repo;
 
         public Task CommitAsync()
         {
-            throw new NotImplementedException();
+            return Repo.UpdateAsync(OriginalContact, null);
         }
 
         public void Dispose()
