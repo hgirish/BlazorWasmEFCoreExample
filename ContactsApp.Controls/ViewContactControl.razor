@@ -42,16 +42,15 @@
                                                                                                                                                                                                                                 <a class="btn btn-primary" title="Edit" href="/edit/@Contact.Id">Edit</a><span>&nbsp;</span>
 
 
-                                                                                                                                                                                                                                @if (!ShowConfirmation)
-                                                                                                                                                                                                                                {
-                                                                                                                                                                                                                                    <button class="btn btn-danger" @onclick="@ShowDeleteConfirmation">Delete</button>
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                else
-                                                                                                                                                                                                                                {
-                                                                                                                                                                                                                                    <br />
-                                                                                                                                                                                                                                    <br />
-                                                                                                                                                                                                                                    <DeletePrompt Confirmation="@(async result => await ConfirmAsync(result))" />
-                                                                                                                                                                                                                                }}
+                                                                                                                                                                                                                                                @if (!ShowConfirmation)
+                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                <button class="btn btn-danger" @onclick="@ShowDeleteConfirmation">Delete</button> }
+                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                            {
+                                                                                                                                                                                                            <br />
+                                                                                                                                                                                                                                <br />
+                                                                                                                                                                                                                                                    <DeletePrompt Confirmation="@(async result => await ConfirmAsync(result))" />
+}}
 @code { /// <summary>
     /// Id from route of <see cref="Contact"/>.
     /// </summary>

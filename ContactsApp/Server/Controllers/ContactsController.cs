@@ -106,5 +106,15 @@ namespace ContactsApp.Server.Controllers
                 return BadRequest(ModelState);
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> PostAsync(Contact contact)
+        {
+            return contact == null
+                ? BadRequest()
+                : ModelState.IsValid ?
+                Ok(await _repo.AddAsync(contact, User)) :
+                BadRequest(ModelState);
+        }
     }
 }

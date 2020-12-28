@@ -46,9 +46,16 @@ namespace ContactsApp.Client.Data
         /// </summary>
         public byte[] RowVersion { get; set; }
 
-        public Task<Contact> AddAsync(Contact item, ClaimsPrincipal user)
+        /// <summary>
+        /// Add a contact
+        /// </summary>
+        /// <param name="item">The <see cref="Contact"/> to add.</param>
+        /// <param name="user">The logged in <see cref="ClaimsPrincipal"/>.</param>
+        /// <returns>The added <see cref="Contact"/>.</returns>
+        public async  Task<Contact> AddAsync(Contact item, ClaimsPrincipal user)
         {
-            throw new NotImplementedException();
+            var result = await _apiClient.PostAsJsonAsync(ApiContacts, item);
+            return await result.Content.ReadFromJsonAsync<Contact>();
         }
 
         public void Attach(Contact item)

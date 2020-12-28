@@ -34,7 +34,7 @@ namespace ContactsApp.Client
             .CreateClient(BaseClient));
 
 
-            //builder.Services.AddApiAuthorization();
+            builder.Services.AddApiAuthorization();
 
             // client implementation
             builder.Services.AddScoped<IBasicRepository<Contact>, WasmRepository>();
